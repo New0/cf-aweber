@@ -220,3 +220,69 @@ function cf_awber_get_auth_url(){
 	$appID = CF_AWBER_APP_ID;
 	return "https://auth.aweber.com/1.0/oauth/authorize_app/{$appID}";
 }
+
+/**
+ * Save auth via AJAX
+ *
+ * @uses "wp_ajax_cf_awber_auth_save" action
+ *
+ * @since 0.1.0
+ */
+function cf_awber_auth_save_ajax_cb(){
+	if( current_user_can( Caldera_Forms::get_manage_cap( 'admin' ) ) && isset( $_POST[ 'code' ] ) && isset( $_POST[ 'nonce' ] ) && wp_verify_nonce( $_POST[ 'nonce' ] )  ){
+		$code = trim( $_POST[ 'code' ] );
+		$response = cf_awber_convert_code( $code );
+		if( $response ){
+			wp_send_json_success();
+		}else{
+			wp_send_json_error();
+		}
+	}
+
+}
+
+/**
+ * Get aweber lists via AJAX
+ *
+ * @uses "wp_ajax_cf_aweber_get_lists" action
+ *
+ * @since 0.1.0
+ */
+function cf_awber_get_lists_ajax_cb(){
+	if( current_user_can( Caldera_Forms::get_manage_cap( 'admin' ) ) && isset( $_GET[ 'nonce' ] ) && wp_verify_nonce( $_GET[ 'nonce' ] ) ){
+		CF_Awber_Credentials::get_instance()->set_from_save();
+		if( CF_Awber_Credentials::get_instance()->all_set() ){
+			$client = new CF_Awber_Client( CF_Awber_Credentials::get_instance() );
+			$lists = $client->listLists();
+			if( is_array( $lists ) ) {
+				wp_send_json_success( array( 'input' => Caldera_Forms_Processor_UI::config_field( cf_awber_lists_field_config() ) ) );
+			}
+		}
+
+		wp_send_json_error();
+
+	}
+	status_header( 404 );
+	die();
+
+}
+
+/**
+ * Add refresh lists button to list input
+ *
+ * @uses "caldera_forms_processor_ui_input_html" filter
+ *
+ * @param string $field Field HTML
+ * @param string $type Field type
+ * @param string $id ID attribute for field
+ *
+ * @return string
+ */
+function caldera_forms_processor_ui_input_html( $field, $type, $id ){
+	if( 'cf-awber-list' == $id ){
+		$field .= sprintf( ' <button class="button" id="cf-awber-refresh-lists">%s</button>', esc_html__( 'Refresh Lists', 'cf-awber' ) );
+		$field .= '<span id="cf-awber-get-list-spinner" class="spinner" aria-hidden="true"></span>';
+	}
+
+	return $field;
+}

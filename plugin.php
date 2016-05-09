@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Awber for Caldera Forms
  * Plugin URI:  https://calderawp.com
- * Description: Awber for Caldera Forms
+ * Description: Awber newsletter integration for Caldera Forms
  * Version:     0.1.0
  * Author:      Josh Pollock for CalderaWP LLC
  * Author URI:  https://CalderaWP.com
@@ -40,55 +40,6 @@ if ( ! defined( 'CF_AWBER_APP_ID' ) ) {
 }
 
 
-
-
-
-add_action( 'wp_ajax_cf_awber_auth_save', function(){
-
-	if( current_user_can( Caldera_Forms::get_manage_cap( 'admin' ) ) && isset( $_POST[ 'code' ] ) && isset( $_POST[ 'nonce' ] ) && wp_verify_nonce( $_POST[ 'nonce' ] )  ){
-		$code = trim( $_POST[ 'code' ] );
-		$response = cf_awber_convert_code( $code );
-		if( $response ){
-			wp_send_json_success();
-		}else{
-			wp_send_json_error();
-		}
-	}
-
-
-
-
-});
-
-
-add_action( 'wp_ajax_cf_aweber_get_lists', function(){
-	if( current_user_can( Caldera_Forms::get_manage_cap( 'admin' ) ) && isset( $_GET[ 'nonce' ] ) && wp_verify_nonce( $_GET[ 'nonce' ] ) ){
-		CF_Awber_Credentials::get_instance()->set_from_save();
-		if( CF_Awber_Credentials::get_instance()->all_set() ){
-			$client = new CF_Awber_Client( CF_Awber_Credentials::get_instance() );
-			$lists = $client->listLists();
-			if( is_array( $lists ) ) {
-				wp_send_json_success( array( 'input' => Caldera_Forms_Processor_UI::config_field( cf_awber_lists_field_config() ) ) );
-			}
-		}
-
-		wp_send_json_error();
-
-	}
-	status_header( 404 );
-	die();
-});
-
-
-add_filter( 'caldera_forms_processor_ui_input_html', function( $field, $type, $id ){
-	if( 'cf-awber-list' == $id ){
-		$field .= sprintf( ' <button class="button" id="cf-awber-refresh-lists">%s</button>', esc_html__( 'Refresh Lists', 'cf-awber' ) );
-		$field .= '<span id="cf-awber-get-list-spinner" class="spinner" aria-hidden="true"></span>';
-	}
-
-	return $field;
-}, 10, 3 );
-
 /**
  * Default initialization for the plugin:
  * - Registers the default textdomain.
@@ -121,3 +72,12 @@ add_action( 'admin_init', 'cf_awber_init_license' );
 
 //load up the processor
 add_action( 'caldera_forms_includes_complete', 'cf_awber_load' );
+
+//Save auth via AJAX
+add_action( 'wp_ajax_cf_awber_auth_save', 'cf_awber_auth_save_ajax_cb' );
+
+//get lists via AJAX
+add_action( 'wp_ajax_cf_aweber_get_lists', 'cf_awber_get_lists_ajax_cb' );
+
+//add refresh lists button to list input
+add_filter( 'caldera_forms_processor_ui_input_html', 'caldera_forms_processor_ui_input_html', 10, 3 );

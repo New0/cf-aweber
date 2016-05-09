@@ -1,6 +1,6 @@
 {
   "name": "calderawp/cf-postmatic",
-  "description": "Awber for Caldera Forms",
+  "description": "Awber newsletter integration for Caldera Forms",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
@@ -18,7 +18,6 @@
   "require" : {
     "php" : ">=5.3.0",
     "calderawp/dismissible-notice": "dev-master",
-    "calderawp/licensing-helper" : "dev-master",
-    "aweber/aweber": "^1.1"
+    "calderawp/licensing-helper" : "dev-master"
   }
 }
