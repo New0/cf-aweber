@@ -42,8 +42,7 @@ class CF_Awber_Client extends  CF_Awber_Base {
 		$this->accessSecret = $credentials->accessSecret;
 
 		$this->application = new AWeberAPI($this->consumerKey, $this->consumerSecret);
-
-
+		
 	}
 
 	/**
@@ -52,8 +51,11 @@ class CF_Awber_Client extends  CF_Awber_Base {
 	 * @since 0.1.0
 	 */
 	public function set_account( $accesKey = '', $accountSecret = '' ){
-
 		$this->account = $this->application->getAccount($this->accessKey, $this->accessSecret );
+	}
+
+	public function is_loaded(){
+		return is_object(  $this->account  ) && is_object(  $this->application  );
 	}
 
 	/**
@@ -72,15 +74,20 @@ class CF_Awber_Client extends  CF_Awber_Base {
 			return;
 		}
 
-		$url = $this->account->data[ 'lists_collection_link' ];
-		$response = $this->application->adapter->request('GET', $url);
+		try {
+			$url = $this->account->data[ 'lists_collection_link' ];
+			$response = $this->application->adapter->request('GET', $url);
 
-		if( is_array( $response ) && isset( $response[ 'entries' ] ) ){
+			if( is_array( $response ) && isset( $response[ 'entries' ] ) ){
 
-			return $response[ 'entries' ];
+				return $response[ 'entries' ];
+			}
+
+
+		} catch(AWeberAPIException $exc) {
+			return $exc->message;
 		}
 
-		return array();
 
 	}
 
@@ -98,10 +105,8 @@ class CF_Awber_Client extends  CF_Awber_Base {
 			//must pass an associative array to the find method
 
 			return $foundLists[0];
-		}
-
-		catch(Exception $exc) {
-			print $exc;
+		}catch(AWeberAPIException $exc) {
+			return $exc->message;
 		}
 	}
 
@@ -118,10 +123,8 @@ class CF_Awber_Client extends  CF_Awber_Base {
 			//must pass an associative array to the find method
 
 			return $foundSubscribers[0];
-		}
-
-		catch(Exception $exc) {
-			print $exc;
+		}catch(AWeberAPIException $exc) {
+			return $exc->message;
 		}
 	}
 
@@ -132,17 +135,24 @@ class CF_Awber_Client extends  CF_Awber_Base {
 	 *
 	 * @return array|void
 	 */
-	function addSubscriber($subscriber, $list) {
+	function addSubscriber( $subscriber, $list ) {
 		try {
+
+
+			$list = $this->findList( $list );
+			if ( ! is_object( $list ) ) {
+				return false;
+			}
 			$listUrl = "/accounts/{$this->account->id}/lists/{$list->id}";
-			$list = $this->account->loadFromUrl($listUrl);
+			$list    = $this->account->loadFromUrl( $listUrl );
 
-			$newSubscriber = $list->subscribers->create($subscriber);
-			return $newSubscriber;
+			$newSubscriber = $list->subscribers->create( $subscriber );
+			if ( is_object( $newSubscriber ) && property_exists( $newSubscriber, 'data' ) && is_array( $newSubscriber->data ) ) {
+				return $newSubscriber->data;
+			}
+		} catch(AWeberAPIException $exc) {
+			return $exc->message;
 		}
 
-		catch(Exception $exc) {
-			print $exc;
-		}
 	}
 }

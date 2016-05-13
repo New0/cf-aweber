@@ -23,7 +23,8 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 
 		if( CF_Awber_Credentials::get_instance()->all_set() ){
 			$this->client = new CF_Awber_Client(CF_Awber_Credentials::get_instance() );
-			return true;
+			$this->client->set_account();
+			return $this->client->is_loaded();
 		}
 
 		return false;
@@ -58,33 +59,59 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 			return $errors;
 
 		}
+		
 		$this->setup_transata( $proccesid );
 
-
 		$subscriber_data = $this->subscriber_data();
-		$subscribed = $this->subscribe( $subscriber_data, $this->data_object->get_value( 'list' ) );
+		if( ! isset( $subscriber_data[ 'email' ] ) || ! is_email( $subscriber_data[ 'email' ] ) ){
+			$this->data_object->add_error( __( 'Invalid email address.', 'cf-awber' )  );
+		}else{
+			$subscribed = $this->subscribe( $subscriber_data, $this->data_object->get_value( 'list' ) );
 
-		if( is_array( $subscribed ) ){
-			Caldera_Forms::set_submission_meta('awber', $subscribed, $form, $proccesid );
+			if ( is_array( $subscribed ) ) {
+				Caldera_Forms::set_submission_meta( 'awber', $subscribed, $form, $proccesid );
+			} elseif ( is_string( $subscribed ) ) {
+				$this->data_object->add_error( $subscribed );
+			}
+		}
+
+		$errors = $this->data_object->get_errors();
+		if ( ! empty( $errors ) ) {
+			return $errors;
+
 		}
 
 
 
 	}
 
+	/**
+	 * Prepare subscriber data
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
 	protected function subscriber_data(){
 		$subscriber_data = array();
 		foreach( $this->subscriber_fields() as $field ){
 			if( 'ip_address' == $field ){
 				$subscriber_data[ $field ] = caldera_forms_get_ip();
 			}else{
-				$subscriber_data[ $field ] = $this->data_object->get_value( $field );
+				$subscriber_data[ $field ] = $this->data_object->get_value( 'cf-awber-' . $field );
 			}
 		}
 
 		return $subscriber_data;
 	}
 
+	/**
+	 * Get fields for subscriber data to send to when subscribing
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
 	protected function subscriber_fields(){
 		$fields = array(
 			'email',
@@ -95,6 +122,15 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 			'misc_notes'
 		);
 
+		/**
+		 * Modify which fields to collect when forming subscriber data that is sent when subscribing
+		 *
+		 * NOTE: This is not data to be sent, but which fields to collect from processor data
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param array $fields Fields to send
+		 */
 		return apply_filters( 'cf_awber_subscriber_fields', $fields );
 	}
 
@@ -137,6 +173,5 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 	public function fields(){
 		return cf_awber_fields();
 	}
-	
 	
 }

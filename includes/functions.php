@@ -14,12 +14,13 @@
  *
  * @since 0.1.0
  *
- * @uses "caldera_forms_includes_complete" action
+ * @uses "caldera_forms_pre_load_processors" action
  */
 function cf_awber_load(){
+
 	include CF_AWBER_PATH . 'includes/aweber_api/aweber_api.php';
 	Caldera_Forms_Autoloader::add_root( 'CF_Awber', CF_AWBER_PATH . 'classes' );
-	new CF_Awber_Processor( cf_awber_config(), 'cf-awber' );
+	new CF_Awber_Processor( cf_awber_config(), cf_awber_fields(), 'cf-awber' );
 
 }
 
@@ -53,6 +54,17 @@ function cf_awber_config(){
  * @return array|void
  */
 function cf_awber_lists(){
+	$set = CF_Awber_Credentials::get_instance()->all_set();
+	if( ! $set ){
+		CF_Awber_Credentials::get_instance()->set_from_save();
+	}
+
+	$set = CF_Awber_Credentials::get_instance()->all_set();
+	if( ! $set ){
+		return array();
+	}
+
+	
 	$client = new CF_Awber_Client( CF_Awber_Credentials::get_instance() );
 	$lists = $client->listLists();
 	if( ! empty( $lists ) ){
@@ -94,7 +106,8 @@ function cf_awber_fields(){
 			'id'       => 'cf-awber-email',
 			'label'    => __( 'Email Address', 'cf-awber' ),
 			'desc'     => __( 'Subscriber email address.', 'cf-awber' ),
-			'type'     => 'text',
+			'type'     => 'advanced',
+			'allow_types' => array( 'email' ),
 			'required' => true,
 			'magic' => false
 		),
@@ -104,28 +117,33 @@ function cf_awber_fields(){
 			'type'          => 'text',
 			'desc'          => __( 'Subscriber name.', 'cf-awber' ),
 			'required'      => true,
-			'allowed_types' => 'email'
+			'allowed_types' => 'email',
 		),
 		array(
 			'id'    => 'cf-awber-tags',
 			'label' => __( 'Tags', 'cf-awber' ),
 			'desc'  => __( 'Comma separated list of tags.', 'cf-awber' ),
 			'type'  => 'text',
+			'required' => false,
 		),
 		array(
 			'id'    => 'cf-awber-misc_notes',
 			'label' => __( 'Miscellaneous notes', 'cf-awber' ),
 			'type'  => 'text',
+			'required' => false,
 		),
 		array(
 			'id'   => 'cf-awber-add_tracking',
 			'label' => __( 'Add Tracking', 'cf-awber' ),
 			'type'  => 'text',
-			'desc' => sprintf( '<a href="%" target="_blank" title="%s">%s</a>.',
+			'desc' => sprintf( '<a href="%s" target="_blank" title="%s">%s</a> %s.',
 				'https://help.aweber.com/hc/en-us/articles/204028836-What-Is-Ad-Tracking-',
-				__( 'Awber ad tracking documentation', 'cf-awber' ),
-				__( 'Value for ad tracking field in Awber. To pass UTM tags use {get:*} magic tags, such as {get:utm_campaign}', 'cf-awber' )
-			)
+				esc_html__( 'Awber ad tracking documentation', 'cf-awber' ),
+				esc_html__( 'Value for ad tracking field in Awber.', 'cf-awber' ),
+				esc_html__( 'To pass UTM tags use {get:*} magic tags, such as {get:utm_campaign}', 'cf-awber' )
+			),
+			'required' => false,
+			'desc_escaped' => true
 		)
 
 	);

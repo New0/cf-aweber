@@ -19,12 +19,12 @@ $credentials_set = CF_Awber_Credentials::get_instance()->all_set();
 		echo $config_fields;
 	?>
 </div>
-
+<?php if( false == $credentials_set ) : ?>
 <div id="cf-awber-auth">
 	<h3>
 		<?php esc_html_e( 'Authorize Caldera Forms To Connect To Awber', 'cf-awber' ); ?>
 	</h3>
-	<?php if( false == $credentials_set ) : ?>
+
 		<div class="caldera-config-group">
 			<label for="cf-awber-auth-url" id="cf-awber-auth-url-label">
 				<?php esc_html_e('Get Authorization', 'cf-aweber'); ?>
