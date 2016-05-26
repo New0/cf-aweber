@@ -34,7 +34,7 @@ $credentials_set = $credentials->all_set();
 				<?php esc_html_e('Get Authorization Code', 'cf-aweber' ); ?>
 			</a>
 			<p class="description" id="cf-awber-auth-url-desc">
-				<?php esc_html_e( 'Click this button to login to your Awber account and get an authorization code. You will need to past this code in the input below.', 'cf-awber' ); ?>
+				<?php esc_html_e( 'Click this button to login to your Awber account and get an authorization code. You will need to paste the code in the input below.', 'cf-awber' ); ?>
 			</p>
 		</div>
 
@@ -62,7 +62,7 @@ $credentials_set = $credentials->all_set();
 				</button>
 			</div>
 			<p class="description" id="cf-awber-code-desc">
-				<?php esc_html_e( 'Once you have entered your authorization code, click here to begin.', 'cf-awber' ); ?>
+				<?php esc_html_e( 'Once you have entered your authorization code, click here.', 'cf-awber' ); ?>
 				<span id="cf-awber-save-auth-spinner" class="spinner" aria-hidden="true"></span>
 			</p>
 		</div>
