@@ -3,7 +3,7 @@
  * Plugin Name: Awber for Caldera Forms
  * Plugin URI:  https://calderawp.com
  * Description: Awber newsletter integration for Caldera Forms
- * Version:     0.1.0
+ * Version: 0.1.0
  * Author:      Josh Pollock for CalderaWP LLC
  * Author URI:  https://CalderaWP.com
  * License:     GPLv2+
