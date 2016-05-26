@@ -19,10 +19,11 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 	 * @return bool
 	 */
 	public function set_up_awber_client(){
-		CF_Awber_Credentials::get_instance()->set_from_save();
+		$credentials = cf_awber_main_credentials();
+		$credentials->set_from_save();
 
-		if( CF_Awber_Credentials::get_instance()->all_set() ){
-			$this->client = new CF_Awber_Client(CF_Awber_Credentials::get_instance() );
+		if( $credentials->all_set() ){
+			$this->client = new CF_Awber_Client ( $credentials );
 			$this->client->set_account();
 			return $this->client->is_loaded();
 		}
@@ -71,7 +72,7 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 			if ( is_array( $subscribed ) ) {
 				Caldera_Forms::set_submission_meta( 'awber', $subscribed, $form, $proccesid );
 			} elseif ( is_string( $subscribed ) ) {
-				$this->data_object->add_error( $subscribed );
+				$this->data_object->add_error( ucfirst( $subscribed ) );
 			}
 		}
 

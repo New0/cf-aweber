@@ -8,8 +8,9 @@
  * @link
  * @copyright 2015 Josh Pollock for CalderaWP LLC for CalderaWP LLC
  */
-CF_Awber_Credentials::get_instance()->set_from_save();
-$credentials_set = CF_Awber_Credentials::get_instance()->all_set();
+$credentials = cf_awber_main_credentials();
+$credentials->set_from_save();
+$credentials_set = $credentials->all_set();
 
 ?>
 
@@ -92,7 +93,7 @@ $credentials_set = CF_Awber_Credentials::get_instance()->all_set();
 				});
 			});
 			xhr.error(function(r) {
-				console.log( r );
+				alert( r.responseJSON.data.message );
 				$( spinnerEL ).css( 'visibility', 'hidden' ).attr( 'aria-hidden', 'true' ).hide();
 			});
 		});
@@ -118,6 +119,7 @@ $credentials_set = CF_Awber_Credentials::get_instance()->all_set();
 				$( spinnerEL ).css( 'visibility', 'hidden' ).attr( 'aria-hidden', 'true' ).hide();
 			});
 			xhr.error(function(r) {
+				alert( r.statusText );
 				$( spinnerEL ).css( 'visibility', 'hidden' ).attr( 'aria-hidden', 'true' ).hide();
 			});
 		}

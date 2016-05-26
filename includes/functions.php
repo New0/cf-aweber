@@ -17,9 +17,12 @@
  * @uses "caldera_forms_pre_load_processors" action
  */
 function cf_awber_load(){
+	if( ! class_exists( 'Caldera_Forms_Processor_Newsletter' ) ){
+		return;
+	}
 
-	include CF_AWBER_PATH . 'includes/aweber_api/aweber_api.php';
-	Caldera_Forms_Autoloader::add_root( 'CF_Awber', CF_AWBER_PATH . 'classes' );
+
+	cf_awber_register_autload();
 	new CF_Awber_Processor( cf_awber_config(), cf_awber_fields(), 'cf-awber' );
 
 }
@@ -54,18 +57,19 @@ function cf_awber_config(){
  * @return array|void
  */
 function cf_awber_lists(){
-	$set = CF_Awber_Credentials::get_instance()->all_set();
+	$credentials = cf_awber_main_credentials();
+	$set = $credentials->all_set();
 	if( ! $set ){
-		CF_Awber_Credentials::get_instance()->set_from_save();
+		$credentials->set_from_save();
 	}
 
-	$set = CF_Awber_Credentials::get_instance()->all_set();
+	$set = $credentials->all_set();
 	if( ! $set ){
 		return array();
 	}
 
 	
-	$client = new CF_Awber_Client( CF_Awber_Credentials::get_instance() );
+	$client = new CF_Awber_Client( $credentials );
 	$lists = $client->listLists();
 	if( ! empty( $lists ) ){
 		$lists = array_combine( wp_list_pluck( $lists, 'id' ), wp_list_pluck( $lists, 'name' ) );
@@ -205,27 +209,6 @@ function CF_AWBER_example_form( $forms ) {
 }
 
 
-/**
- * Convert auth code to keys
- *
- * @since 0.1.0
- *
- * @param string $code Authroization code
- *
- * @return bool
- */
-function cf_awber_convert_code( $code ){
-
-	$credentials = AWeberAPI::getDataFromAweberID($code);
-	if ( is_array( $credentials ) ) {
-		CF_Awber_Credentials::get_instance()->consumerKey    = $credentials[ 0 ];
-		CF_Awber_Credentials::get_instance()->consumerSecret = $credentials[ 1 ];
-		CF_Awber_Credentials::get_instance()->accessKey      = $credentials[ 2 ];
-		CF_Awber_Credentials::get_instance()->accessSecret   = $credentials[ 3 ];
-		return CF_Awber_Credentials::get_instance()->store();
-	}
-}
-
 
 /**
  * Get the URL for login and get auth code
@@ -248,16 +231,53 @@ function cf_awber_get_auth_url(){
  */
 function cf_awber_auth_save_ajax_cb(){
 	if( current_user_can( Caldera_Forms::get_manage_cap( 'admin' ) ) && isset( $_POST[ 'code' ] ) && isset( $_POST[ 'nonce' ] ) && wp_verify_nonce( $_POST[ 'nonce' ] )  ){
+		cf_awber_register_autload();
 		$code = trim( $_POST[ 'code' ] );
 		$response = cf_awber_convert_code( $code );
-		if( $response ){
+		if( ! $response ){
+			status_header( 500 );
+			wp_send_json_error( array( 'message' => esc_html__( 'Unknown error', 'cf-awber' ) ) );
+		}elseif( ! is_wp_error( $response ) ){
 			wp_send_json_success();
 		}else{
-			wp_send_json_error();
+			status_header( 500 );
+			wp_send_json_error( $response );
 		}
 	}
 
 }
+
+/**
+ * Convert auth code to keys
+ *
+ * @since 0.1.0
+ *
+ * @param string $code Authroization code
+ *
+ * @return bool
+ */
+function cf_awber_convert_code( $code ){
+
+	include_once dirname( __FILE__  ) . '/aweber_api/aweber.php';
+	cf_awber_register_autload();
+	try {
+		$credentials = AWeberAPI::getDataFromAweberID($code);
+	} catch(AWeberAPIException $exc) {
+		return new WP_Error( 'cf-aweber-auth-fail', $exc->message );
+	}
+
+
+
+	if ( is_array( $credentials ) ) {
+		$credentials_object = cf_awber_main_credentials();
+		$credentials_object->consumerKey    = $credentials[ 0 ];
+		$credentials_object->consumerSecret = $credentials[ 1 ];
+		$credentials_object->accessKey      = $credentials[ 2 ];
+		$credentials_object->accessSecret   = $credentials[ 3 ];
+		return $credentials_object->store();
+	}
+}
+
 
 /**
  * Get aweber lists via AJAX
@@ -267,10 +287,13 @@ function cf_awber_auth_save_ajax_cb(){
  * @since 0.1.0
  */
 function cf_awber_get_lists_ajax_cb(){
+
 	if( current_user_can( Caldera_Forms::get_manage_cap( 'admin' ) ) && isset( $_GET[ 'nonce' ] ) && wp_verify_nonce( $_GET[ 'nonce' ] ) ){
-		CF_Awber_Credentials::get_instance()->set_from_save();
-		if( CF_Awber_Credentials::get_instance()->all_set() ){
-			$client = new CF_Awber_Client( CF_Awber_Credentials::get_instance() );
+		cf_awber_register_autload();
+		$credentials = cf_awber_main_credentials();
+		$credentials->set_from_save();
+		if( cf_awber_main_credentials()->all_set() ){
+			$client = new CF_Awber_Client( $credentials );
 			$lists = $client->listLists();
 			if( is_array( $lists ) ) {
 				wp_send_json_success( array( 'input' => Caldera_Forms_Processor_UI::config_field( cf_awber_lists_field_config() ) ) );
@@ -286,6 +309,23 @@ function cf_awber_get_lists_ajax_cb(){
 }
 
 /**
+ * Get main credentials object
+ *
+ * @since 0.1.0
+ *
+ * @return \CF_Awber_Credentials
+ */
+function cf_awber_main_credentials(){
+	global $cf_aweber_main_cred;
+	if( ! is_object( $cf_aweber_main_cred ) ){
+		$cf_aweber_main_cred = new CF_Awber_Credentials();
+	}
+
+	return $cf_aweber_main_cred;
+
+}
+
+/**
  * Add refresh lists button to list input
  *
  * @uses "caldera_forms_processor_ui_input_html" filter
@@ -296,11 +336,21 @@ function cf_awber_get_lists_ajax_cb(){
  *
  * @return string
  */
-function caldera_forms_processor_ui_input_html( $field, $type, $id ){
+function cf_awber_processor_ui_input_html( $field, $type, $id ){
 	if( 'cf-awber-list' == $id ){
 		$field .= sprintf( ' <button class="button" id="cf-awber-refresh-lists">%s</button>', esc_html__( 'Refresh Lists', 'cf-awber' ) );
 		$field .= '<span id="cf-awber-get-list-spinner" class="spinner" aria-hidden="true"></span>';
 	}
 
 	return $field;
+}
+
+/**
+ * Load up classess
+ *
+ * @since 0.1.0
+ */
+function cf_awber_register_autload(){
+	include_once CF_AWBER_PATH . 'includes/aweber_api/aweber_api.php';
+	Caldera_Forms_Autoloader::add_root( 'CF_Awber', CF_AWBER_PATH . 'classes' );
 }

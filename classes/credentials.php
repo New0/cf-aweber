@@ -1,11 +1,4 @@
 <?php
-
-
-///THIS IS ALL FUCKED BEACUSE SHOULDN'T BE ONE SINGLETON - should be one instance per form, but that's annoying since you would need to reauth all the dammn time.
-
-//@TODO THINK MORE ABOUT THIS AND REDO IT...
-
-
 /**
  * Class CF_Awber_Credentials
  *
@@ -17,28 +10,48 @@
  */
 class CF_Awber_Credentials extends CF_Awber_Base {
 
-	private static $instance;
+	/**
+	 * Key to store this credentials set in
+	 *
+	 * @since 0.1.0
+	 *
+	 * @var string
+	 */
+	protected $option_key;
 
-	protected function __construct(){}
-	public static function get_instance(){
-		if( null == self::$instance ){
-			self::$instance = new self();
-		}
-
-		return self::$instance;
+	/**
+	 * CF_Awber_Credentials constructor.
+	 *
+	 * @param string $option_key Key for storing this credentials set
+	 */
+	public function __construct( $option_key = '_cf_awber_main_credentials') {
+		$this->option_key = $option_key;
 	}
 
-
+	/**
+	 * Save the credentials
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return bool
+	 */
 	public function store(){
-		if( 0 == get_option( __CLASS__, 0 ) ){
-			return add_option( __CLASS__, $this->deflate() );
+		if( 0 == get_option( $this->option_key, 0 ) ){
+			return add_option( $this->option_key, $this->deflate() );
 		}else{
-			return update_option(__CLASS__, $this->deflate() );
+			return update_option($this->option_key, $this->deflate() );
 		}
 
 
 	}
 
+	/**
+	 * Check if all of our properties are set
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return bool
+	 */
 	public function all_set(){
 		foreach(  get_object_vars( $this ) as $prop => $value ){
 			if( ! isset( $this->$prop ) ){
@@ -49,12 +62,13 @@ class CF_Awber_Credentials extends CF_Awber_Base {
 		return true;
 	}
 
+	/**
+	 * Get saved settings and set properties
+	 *
+	 * @since 0.1.0
+	 */
 	public function set_from_save(){
-		$this->inflate();
-	}
-
-	protected function inflate(){
-		$saved = get_option( __CLASS__, array() );
+		$saved = get_option( $this->option_key, array() );
 		if( ! empty( $saved ) ){
 			foreach(  get_object_vars( $this ) as $prop => $value ){
 				if( isset( $saved[ $prop ] ) ){
@@ -66,13 +80,15 @@ class CF_Awber_Credentials extends CF_Awber_Base {
 
 	}
 
+	/**
+	 *  Prepare object properites to be saved
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
 	protected function deflate(){
 		return get_object_vars( $this );
 	}
-
-
-
-
-
 
 }
