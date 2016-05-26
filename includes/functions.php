@@ -282,7 +282,7 @@ function cf_awber_convert_code( $code ){
 /**
  * Get aweber lists via AJAX
  *
- * @uses "wp_ajax_cf_aweber_get_lists" action
+ * @uses "wp_ajax_cf_awber_get_lists" action
  *
  * @since 0.1.0
  */

@@ -106,7 +106,7 @@ $credentials_set = $credentials->all_set();
 		function getLists(){
 			var spinnerEL = document.getElementById( 'cf-awber-get-list-spinner' );
 			var data = {
-				action: 'cf_aweber_get_lists',
+				action: 'cf_awber_get_lists',
 				nonce: "<?php echo wp_create_nonce(); ?>"
 			};
 			$( spinnerEL ).css( 'visibility', 'visible' ).attr( 'aria-hidden', 'false' ).show();

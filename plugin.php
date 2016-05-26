@@ -77,7 +77,7 @@ add_action( 'caldera_forms_pre_load_processors', 'cf_awber_load' );
 add_action( 'wp_ajax_cf_awber_auth_save', 'cf_awber_auth_save_ajax_cb' );
 
 //get lists via AJAX
-add_action( 'wp_ajax_cf_aweber_get_lists', 'cf_awber_get_lists_ajax_cb' );
+add_action( 'wp_ajax_cf_awber_get_lists', 'cf_awber_get_lists_ajax_cb' );
 
 //add refresh lists button to list input
 add_filter( 'caldera_forms_processor_ui_input_html', 'cf_awber_processor_ui_input_html', 10, 3 );
