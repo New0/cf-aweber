@@ -28,6 +28,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
+
 /**
  * Define constants
  */
@@ -68,7 +70,7 @@ add_action( 'init', 'cf_awber_init_text_domain' );
 add_action( 'admin_init', 'cf_awber_init_license' );
 
 //add our example form
-//add_filter( 'caldera_forms_get_form_templates', 'cf_braintree_example_form' );
+add_filter( 'caldera_forms_get_form_templates', 'cf_awber_example_form' );
 
 //load up the processor
 add_action( 'caldera_forms_pre_load_processors', 'cf_awber_load' );

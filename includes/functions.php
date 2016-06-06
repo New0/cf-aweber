@@ -199,8 +199,8 @@ function CF_AWBER_init_license(){
  * @return array
  */
 function CF_AWBER_example_form( $forms ) {
-	$forms['cf_aweber']	= array(
-		'name'	=>	__( 'Awber for Caldera Forms Example', 'cf-aweber' ),
+	$forms['cf_awber']	= array(
+		'name'	=>	__( 'Contact form with Awber signup.', 'cf-awber' ),
 		'template'	=>	include CF_AWBER_PATH . 'includes/templates/example.php'
 	);
 
