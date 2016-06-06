@@ -39,7 +39,7 @@ function cf_awber_config(){
 	return array(
 		"name"				=>	__( 'Awber for Caldera Forms', 'cf-aweber'),
 		"description"		=>	__( 'Awber for Caldera Forms', 'cf-aweber'),
-		"icon"				=>	CF_AWBER_URL . "icon.png",
+		"icon"				=>	CF_AWBER_URL . "/icon.png",
 		"author"			=>	'Josh Pollock for CalderaWP LLC',
 		"author_url"		=>	'https://CalderaWP.com',
 		"template"			=>	CF_AWBER_PATH . "includes/config.php",
