@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Aweber for Caldera Forms
  * Plugin URI:  https://calderawp.com
- * Description: Awber newsletter integration for Caldera Forms
+ * Description: Aweber newsletter integration for Caldera Forms
  * Version: 0.1.0
  * Author:      Josh Pollock for CalderaWP LLC
  * Author URI:  https://CalderaWP.com

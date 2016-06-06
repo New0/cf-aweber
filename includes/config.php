@@ -1,6 +1,6 @@
 <?php
 /**
- * Processor config UI for Awber for Caldera Forms
+ * Processor config UI for Aweber for Caldera Forms
  *
  * @package   cf_aweber
  * @author    Josh Pollock Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
@@ -23,18 +23,18 @@ $credentials_set = $credentials->all_set();
 <?php if( false == $credentials_set ) : ?>
 <div id="cf-aweber-auth">
 	<h3>
-		<?php esc_html_e( 'Authorize Caldera Forms To Connect To Awber', 'cf-aweber' ); ?>
+		<?php esc_html_e( 'Authorize Caldera Forms To Connect To Aweber', 'cf-aweber' ); ?>
 	</h3>
 
 		<div class="caldera-config-group">
 			<label for="cf-aweber-auth-url" id="cf-aweber-auth-url-label">
 				<?php esc_html_e('Get Authorization', 'cf-aweber'); ?>
 			</label>
-			<a href="<?php echo esc_url( cf_aweber_get_auth_url() ); ?>" id="cf-aweber-auth-url" target="_blank" class="button" aria-describedby="cf-aweber-auth-url-desc" title="<?php esc_attr_e( 'Click to get authorization code from Awber', 'cf-aweber');?>">
+			<a href="<?php echo esc_url( cf_aweber_get_auth_url() ); ?>" id="cf-aweber-auth-url" target="_blank" class="button" aria-describedby="cf-aweber-auth-url-desc" title="<?php esc_attr_e( 'Click to get authorization code from Aweber', 'cf-aweber');?>">
 				<?php esc_html_e('Get Authorization Code', 'cf-aweber' ); ?>
 			</a>
 			<p class="description" id="cf-aweber-auth-url-desc">
-				<?php esc_html_e( 'Click this button to login to your Awber account and get an authorization code. You will need to paste the code in the input below.', 'cf-aweber' ); ?>
+				<?php esc_html_e( 'Click this button to login to your Aweber account and get an authorization code. You will need to paste the code in the input below.', 'cf-aweber' ); ?>
 			</p>
 		</div>
 

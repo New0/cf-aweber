@@ -1,6 +1,6 @@
 <?php
 /**
- * Class CF_Awber_Client
+ * Class CF_Aweber_Client
  *
  * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
@@ -8,9 +8,9 @@
  * @link
  * @copyright 2015 Josh Pollock for CalderaWP LLC
  */
-class CF_Awber_Client extends  CF_Awber_Base {
+class CF_Aweber_Client extends  CF_Aweber_Base {
 	/**
-	 * Awber application object
+	 * Aweber application object
 	 *
 	 * @since 0.1.0
 	 *
@@ -19,7 +19,7 @@ class CF_Awber_Client extends  CF_Awber_Base {
 	public $application;
 
 	/**
-	 * Awber account object
+	 * Aweber account object
 	 *
 	 * @since 0.1.0
 	 *
@@ -32,9 +32,9 @@ class CF_Awber_Client extends  CF_Awber_Base {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param \CF_Awber_Credentials $credentials
+	 * @param \CF_Aweber_Credentials $credentials
 	 */
-	function __construct( CF_Awber_Credentials $credentials ) {
+	function __construct( CF_Aweber_Credentials $credentials ) {
 
 		$this->consumerKey = $credentials->consumerKey;
 		$this->consumerSecret = $credentials->consumerSecret;

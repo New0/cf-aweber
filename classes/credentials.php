@@ -1,6 +1,6 @@
 <?php
 /**
- * Class CF_Awber_Credentials
+ * Class CF_Aweber_Credentials
  *
  * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
@@ -8,7 +8,7 @@
  * @link
  * @copyright 2015 Josh Pollock for CalderaWP LLC
  */
-class CF_Awber_Credentials extends CF_Awber_Base {
+class CF_Aweber_Credentials extends CF_Aweber_Base {
 
 	/**
 	 * Key to store this credentials set in
@@ -20,7 +20,7 @@ class CF_Awber_Credentials extends CF_Awber_Base {
 	protected $option_key;
 
 	/**
-	 * CF_Awber_Credentials constructor.
+	 * CF_Aweber_Credentials constructor.
 	 *
 	 * @param string $option_key Key for storing this credentials set
 	 */

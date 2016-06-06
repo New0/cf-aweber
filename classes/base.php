@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class CF_Awber_Base
+ * Class CF_Aweber_Base
  *
  * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
@@ -9,7 +9,7 @@
  * @link
  * @copyright 2015 Josh Pollock for CalderaWP LLC
  */
-abstract class CF_Awber_Base {
+abstract class CF_Aweber_Base {
 
 	/**
 	 * Access key

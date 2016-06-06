@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions for Awber for Caldera Forms
+ * Functions for Aweber for Caldera Forms
  *
  * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
@@ -23,12 +23,12 @@ function cf_aweber_load(){
 
 
 	cf_aweber_register_autload();
-	new CF_Awber_Processor( cf_aweber_config(), cf_aweber_fields(), 'cf-aweber' );
+	new CF_Aweber_Processor( cf_aweber_config(), cf_aweber_fields(), 'cf-aweber' );
 
 }
 
 /**
- * Awber for Caldera Forms config
+ * Aweber for Caldera Forms config
  *
  * @since 0.1.0
  *
@@ -37,8 +37,8 @@ function cf_aweber_load(){
 function cf_aweber_config(){
 
 	return array(
-		"name"				=>	__( 'Awber for Caldera Forms', 'cf-aweber'),
-		"description"		=>	__( 'Awber for Caldera Forms', 'cf-aweber'),
+		"name"				=>	__( 'Aweber for Caldera Forms', 'cf-aweber'),
+		"description"		=>	__( 'Aweber for Caldera Forms', 'cf-aweber'),
 		"icon"				=>	CF_AWEBER_URL . "/icon.png",
 		"author"			=>	'Josh Pollock for CalderaWP LLC',
 		"author_url"		=>	'https://CalderaWP.com',
@@ -69,7 +69,7 @@ function cf_aweber_lists(){
 	}
 
 	
-	$client = new CF_Awber_Client( $credentials );
+	$client = new CF_Aweber_Client( $credentials );
 	$lists = $client->listLists();
 	if( ! empty( $lists ) ){
 		$lists = array_combine( wp_list_pluck( $lists, 'id' ), wp_list_pluck( $lists, 'name' ) );
@@ -142,8 +142,8 @@ function cf_aweber_fields(){
 			'type'  => 'text',
 			'desc' => sprintf( '<a href="%s" target="_blank" title="%s">%s</a> %s.',
 				'https://help.aweber.com/hc/en-us/articles/204028836-What-Is-Ad-Tracking-',
-				esc_html__( 'Awber ad tracking documentation', 'cf-aweber' ),
-				esc_html__( 'Value for ad tracking field in Awber.', 'cf-aweber' ),
+				esc_html__( 'Aweber ad tracking documentation', 'cf-aweber' ),
+				esc_html__( 'Value for ad tracking field in Aweber.', 'cf-aweber' ),
 				esc_html__( 'To pass UTM tags use {get:*} magic tags, such as {get:utm_campaign}', 'cf-aweber' )
 			),
 			'required' => false,
@@ -174,7 +174,7 @@ function cf_aweber_fields(){
 function CF_AWEBER_init_license(){
 
 	$plugin = array(
-		'name'		=>	'Awber for Caldera Forms',
+		'name'		=>	'Aweber for Caldera Forms',
 		'slug'		=>	'aweber-for-caldera-forms',
 		'url'		=>	'https://calderawp.com/',
 		'version'	=>	CF_AWEBER_VER,
@@ -200,7 +200,7 @@ function CF_AWEBER_init_license(){
  */
 function CF_AWEBER_example_form( $forms ) {
 	$forms['cf_aweber']	= array(
-		'name'	=>	__( 'Contact form with Awber signup.', 'cf-aweber' ),
+		'name'	=>	__( 'Contact form with Aweber signup.', 'cf-aweber' ),
 		'template'	=>	include CF_AWEBER_PATH . 'includes/templates/example.php'
 	);
 
@@ -293,7 +293,7 @@ function cf_aweber_get_lists_ajax_cb(){
 		$credentials = cf_aweber_main_credentials();
 		$credentials->set_from_save();
 		if( cf_aweber_main_credentials()->all_set() ){
-			$client = new CF_Awber_Client( $credentials );
+			$client = new CF_Aweber_Client( $credentials );
 			$lists = $client->listLists();
 			if( is_array( $lists ) ) {
 				wp_send_json_success( array( 'input' => Caldera_Forms_Processor_UI::config_field( cf_aweber_lists_field_config() ) ) );
@@ -313,12 +313,12 @@ function cf_aweber_get_lists_ajax_cb(){
  *
  * @since 0.1.0
  *
- * @return \CF_Awber_Credentials
+ * @return \CF_Aweber_Credentials
  */
 function cf_aweber_main_credentials(){
 	global $cf_aweber_main_cred;
 	if( ! is_object( $cf_aweber_main_cred ) ){
-		$cf_aweber_main_cred = new CF_Awber_Credentials();
+		$cf_aweber_main_cred = new CF_Aweber_Credentials();
 	}
 
 	return $cf_aweber_main_cred;
@@ -352,5 +352,5 @@ function cf_aweber_processor_ui_input_html( $field, $type, $id ){
  */
 function cf_aweber_register_autload(){
 	include_once CF_AWEBER_PATH . 'includes/aweber_api/aweber_api.php';
-	Caldera_Forms_Autoloader::add_root( 'CF_Awber', CF_AWEBER_PATH . 'classes' );
+	Caldera_Forms_Autoloader::add_root( 'CF_Aweber', CF_AWEBER_PATH . 'classes' );
 }

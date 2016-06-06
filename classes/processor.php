@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class CF_Awber_Processor
+ * Class CF_Aweber_Processor
  *
  * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
@@ -9,10 +9,10 @@
  * @link
  * @copyright 2015 Josh Pollock for CalderaWP LLC
  */
-class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
+class CF_Aweber_Processor extends Caldera_Forms_Processor_Newsletter {
 
 	/**
-	 * Set Awber client in the client property
+	 * Set Aweber client in the client property
 	 *
 	 * @since 0.1.0
 	 *
@@ -23,7 +23,7 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 		$credentials->set_from_save();
 
 		if( $credentials->all_set() ){
-			$this->client = new CF_Awber_Client ( $credentials );
+			$this->client = new CF_Aweber_Client ( $credentials );
 			$this->client->set_account();
 			return $this->client->is_loaded();
 		}
