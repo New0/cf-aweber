@@ -171,8 +171,10 @@ function cf_aweber_fields(){
  *
  * @since 0.1.0
  */
-function CF_AWEBER_init_license(){
-
+function cf_aweber_init_license(){
+	if ( ! function_exists( 'caldera_warnings_dismissible_notice' ) ) {
+		include_once CF_AWEBER_PATH . 'vendor/autoload.php';
+	}
 	$plugin = array(
 		'name'		=>	'Aweber for Caldera Forms',
 		'slug'		=>	'aweber-for-caldera-forms',
@@ -198,7 +200,7 @@ function CF_AWEBER_init_license(){
  *
  * @return array
  */
-function CF_AWEBER_example_form( $forms ) {
+function cf_aweber_example_form( $forms ) {
 	$forms['cf_aweber']	= array(
 		'name'	=>	__( 'Contact form with Aweber signup.', 'cf-aweber' ),
 		'template'	=>	include CF_AWEBER_PATH . 'includes/templates/example.php'
@@ -295,7 +297,7 @@ function cf_aweber_get_lists_ajax_cb(){
 		if( cf_aweber_main_credentials()->all_set() ){
 			$client = new CF_Aweber_Client( $credentials );
 			$lists = $client->listLists();
-			if( is_array( $lists ) ) {
+			if( is_array( $lists ) && ! empty( $lists ) ) {
 				wp_send_json_success( array( 'input' => Caldera_Forms_Processor_UI::config_field( cf_aweber_lists_field_config() ) ) );
 			}
 		}

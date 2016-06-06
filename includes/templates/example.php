@@ -1,8 +1,8 @@
 <?php
 /**
- * Example form for Awber for Caldera Forms
+ * Example form for Aweber for Caldera Forms
  *
- * @package   cf_awber
+ * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
  * @license   GPL-2.0+
  * @link
@@ -10,9 +10,9 @@
  */
 return array(
 	'_last_updated' => 'Mon, 06 Jun 2016 21:28:12 +0000',
-	'ID' => 'awber',
+	'ID' => 'aweber',
 	'cf_version' => '1.3.5.3',
-	'name' => 'Awber',
+	'name' => 'Aweber',
 	'description' => '',
 	'db_support' => 1,
 	'pinned' => 1,
@@ -164,19 +164,19 @@ return array(
 						array(
 							'insert' => 1,
 						),
-					'type' => 'cf-awber',
+					'type' => 'cf-aweber',
 					'config' =>
 						array(
-							'cf-awber-list' => 4290049,
-							'cf-awber-email' => 'fld_4215532',
+							'cf-aweber-list' => 4290049,
+							'cf-aweber-email' => 'fld_4215532',
 							'_required_bounds' =>
 								array(
-									0 => 'cf-awber-email',
+									0 => 'cf-aweber-email',
 								),
-							'cf-awber-name' => '%name%',
-							'cf-awber-tags' => '',
-							'cf-awber-misc_notes' => '',
-							'cf-awber-add_tracking' => '',
+							'cf-aweber-name' => '%name%',
+							'cf-aweber-tags' => '',
+							'cf-aweber-misc_notes' => '',
+							'cf-aweber-add_tracking' => '',
 						),
 					'conditions' =>
 						array(
@@ -212,7 +212,7 @@ return array(
 			'email_type' => 'html',
 			'recipients' => '',
 			'bcc_to' => '',
-			'email_subject' => 'awber',
+			'email_subject' => 'aweber',
 			'email_message' => '{summary}',
 		),
 	'version' => '1.3.5.3',
