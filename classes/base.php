@@ -3,7 +3,7 @@
 /**
  * Class CF_Awber_Base
  *
- * @package   cf_awber
+ * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
  * @license   GPL-2.0+
  * @link

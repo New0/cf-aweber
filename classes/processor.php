@@ -3,7 +3,7 @@
 /**
  * Class CF_Awber_Processor
  *
- * @package   cf_awber
+ * @package   cf_aweber
  * @author    Josh Pollock for CalderaWP LLC (email : Josh@CalderaWP.com)
  * @license   GPL-2.0+
  * @link
@@ -18,8 +18,8 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 	 *
 	 * @return bool
 	 */
-	public function set_up_awber_client(){
-		$credentials = cf_awber_main_credentials();
+	public function set_up_aweber_client(){
+		$credentials = cf_aweber_main_credentials();
 		$credentials->set_from_save();
 
 		if( $credentials->all_set() ){
@@ -44,7 +44,7 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 	 * @return array Return if errors, do not return if not
 	 */
 	public function pre_processor( array $config, array $form, $proccesid ){
-		$client_set = $this->set_up_awber_client();
+		$client_set = $this->set_up_aweber_client();
 		if( ! $client_set ){
 			return array(
 				'type' => 'error',
@@ -65,12 +65,12 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 
 		$subscriber_data = $this->subscriber_data();
 		if( ! isset( $subscriber_data[ 'email' ] ) || ! is_email( $subscriber_data[ 'email' ] ) ){
-			$this->data_object->add_error( __( 'Invalid email address.', 'cf-awber' )  );
+			$this->data_object->add_error( __( 'Invalid email address.', 'cf-aweber' )  );
 		}else{
 			$subscribed = $this->subscribe( $subscriber_data, $this->data_object->get_value( 'list' ) );
 
 			if ( is_array( $subscribed ) ) {
-				Caldera_Forms::set_submission_meta( 'awber', $subscribed, $form, $proccesid );
+				Caldera_Forms::set_submission_meta( 'aweber', $subscribed, $form, $proccesid );
 			} elseif ( is_string( $subscribed ) ) {
 				$this->data_object->add_error( ucfirst( $subscribed ) );
 			}
@@ -99,7 +99,7 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 			if( 'ip_address' == $field ){
 				$subscriber_data[ $field ] = caldera_forms_get_ip();
 			}else{
-				$subscriber_data[ $field ] = $this->data_object->get_value( 'cf-awber-' . $field );
+				$subscriber_data[ $field ] = $this->data_object->get_value( 'cf-aweber-' . $field );
 			}
 		}
 
@@ -132,7 +132,7 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 		 *
 		 * @param array $fields Fields to send
 		 */
-		return apply_filters( 'cf_awber_subscriber_fields', $fields );
+		return apply_filters( 'cf_aweber_subscriber_fields', $fields );
 	}
 
 	/**
@@ -172,7 +172,7 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 	 * @return array
 	 */
 	public function fields(){
-		return cf_awber_fields();
+		return cf_aweber_fields();
 	}
 	
 }

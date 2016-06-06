@@ -1,6 +1,6 @@
 {
-  "name": "calderawp/cf-postmatic",
-  "description": "Awber newsletter integration for Caldera Forms",
+  "name": "calderawp/cf-aweber",
+  "description": "Aweber newsletter integration for Caldera Forms",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
