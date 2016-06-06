@@ -48,7 +48,7 @@ class CF_Awber_Processor extends Caldera_Forms_Processor_Newsletter {
 		if( ! $client_set ){
 			return array(
 				'type' => 'error',
-				'note' => esc_html__( 'Aweber is not authorized', 'cf-awber' )
+				'note' => esc_html__( 'Aweber is not authorized', 'cf-aweber' )
 			);
 
 		}

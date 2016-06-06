@@ -37,8 +37,8 @@ function cf_awber_load(){
 function cf_awber_config(){
 
 	return array(
-		"name"				=>	__( 'Awber for Caldera Forms', 'cf-awber'),
-		"description"		=>	__( 'Awber for Caldera Forms', 'cf-awber'),
+		"name"				=>	__( 'Awber for Caldera Forms', 'cf-aweber'),
+		"description"		=>	__( 'Awber for Caldera Forms', 'cf-aweber'),
 		"icon"				=>	CF_AWBER_URL . "/icon.png",
 		"author"			=>	'Josh Pollock for CalderaWP LLC',
 		"author_url"		=>	'https://CalderaWP.com',
@@ -263,7 +263,7 @@ function cf_awber_convert_code( $code ){
 	try {
 		$credentials = AWeberAPI::getDataFromAweberID($code);
 	} catch(AWeberAPIException $exc) {
-		return new WP_Error( 'cf-awber-auth-fail', $exc->message );
+		return new WP_Error( 'cf-aweber-auth-fail', $exc->message );
 	}
 
 
