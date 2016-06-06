@@ -28,10 +28,10 @@ $credentials_set = $credentials->all_set();
 
 		<div class="caldera-config-group">
 			<label for="cf-awber-auth-url" id="cf-awber-auth-url-label">
-				<?php esc_html_e('Get Authorization', 'cf-aweber'); ?>
+				<?php esc_html_e('Get Authorization', 'cf-awber'); ?>
 			</label>
 			<a href="<?php echo esc_url( cf_awber_get_auth_url() ); ?>" id="cf-awber-auth-url" target="_blank" class="button" aria-describedby="cf-awber-auth-url-desc" title="<?php esc_attr_e( 'Click to get authorization code from Awber', 'cf-awber');?>">
-				<?php esc_html_e('Get Authorization Code', 'cf-aweber' ); ?>
+				<?php esc_html_e('Get Authorization Code', 'cf-awber' ); ?>
 			</a>
 			<p class="description" id="cf-awber-auth-url-desc">
 				<?php esc_html_e( 'Click this button to login to your Awber account and get an authorization code. You will need to paste the code in the input below.', 'cf-awber' ); ?>
@@ -42,7 +42,7 @@ $credentials_set = $credentials->all_set();
 
 		<div class="caldera-config-group">
 			<label for="cf-awber-code" id="cf-awber-code-label">
-				<?php esc_html_e('Authorization Code', 'cf-aweber'); ?>
+				<?php esc_html_e('Authorization Code', 'cf-awber'); ?>
 			</label>
 			<div class="caldera-config-field">
 				<input type="text" class="block-input field-config" id="cf-awber-code" aria-describedby="cf-awber-code-desc" aria-labelledby="cf-awber-code-label">
@@ -54,11 +54,11 @@ $credentials_set = $credentials->all_set();
 
 		<div class="caldera-config-group">
 			<label for="cf-awber-auth-save" id="cf-awber-auth-save-label">
-				<?php esc_html_e('Save Authorization', 'cf-aweber'); ?>
+				<?php esc_html_e('Save Authorization', 'cf-awber'); ?>
 			</label>
 			<div class="caldera-config-field">
 				<button id="cf-awber-auth-save" class="button button"  aria-labelledby="cf-awber-auth-save-label">
-					<?php esc_html_e( 'Save Authorization', 'cf-aweber'); ?>
+					<?php esc_html_e( 'Save Authorization', 'cf-awber'); ?>
 				</button>
 			</div>
 			<p class="description" id="cf-awber-code-desc">

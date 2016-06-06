@@ -7,7 +7,7 @@
  * Author:      Josh Pollock for CalderaWP LLC
  * Author URI:  https://CalderaWP.com
  * License:     GPLv2+
- * Text Domain: cf-aweber
+ * Text Domain: cf-awber
  * Domain Path: /languages
  */
 
@@ -47,7 +47,7 @@ if ( ! defined( 'CF_AWBER_APP_ID' ) ) {
  * - Registers the default textdomain.
  */
 function cf_awber_init_text_domain() {
-	load_plugin_textdomain( 'cf-aweber', FALSE, CF_AWBER_PATH . 'languages' );
+	load_plugin_textdomain( 'cf-awber', FALSE, CF_AWBER_PATH . 'languages' );
 }
 
 /**
