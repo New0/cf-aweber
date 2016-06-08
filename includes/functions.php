@@ -20,7 +20,8 @@ function cf_aweber_load(){
 	if( ! class_exists( 'Caldera_Forms_Processor_Newsletter' ) ){
 		return;
 	}
-
+	
+	include_once CF_AWEBER_PATH . 'vendor/autoload.php';
 
 	cf_aweber_register_autload();
 	new CF_Aweber_Processor( cf_aweber_config(), cf_aweber_fields(), 'cf-aweber' );
