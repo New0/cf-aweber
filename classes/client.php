@@ -51,7 +51,12 @@ class CF_Aweber_Client extends  CF_Aweber_Base {
 	 * @since 0.1.0
 	 */
 	public function set_account( $accesKey = '', $accountSecret = '' ){
-		$this->account = $this->application->getAccount($this->accessKey, $this->accessSecret );
+		try {
+			$this->account = $this->application->getAccount($this->accessKey, $this->accessSecret );
+		} catch ( AWeberAPIException $exc ) {
+			return $exc->message;
+		}
+
 	}
 
 	public function is_loaded(){
