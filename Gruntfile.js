@@ -116,8 +116,8 @@ module.exports = function (grunt) {
                     from: /Version:\s*(.*)/,
                     to: "Version: <%= pkg.version %>"
                 }, {
-                    from: /define\(\s*'CF_AWBER_VER',\s*'(.*)'\s*\);/,
-                    to: "define( 'CF_AWBER_VER', '<%= pkg.version %>' );"
+                    from: /define\(\s*'CF_AWEBER_VER',\s*'(.*)'\s*\);/,
+                    to: "define( 'CF_AWEBER_VER', '<%= pkg.version %>' );"
                 }]
             }
         }
