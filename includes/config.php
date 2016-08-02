@@ -73,7 +73,7 @@ $credentials_set = $credentials->all_set();
 
 <script type="text/javascript">
 	jQuery(document).ready(function( $ ) {
-
+		console.log( $( '.processor_config_string' ).closest() );
 
 		$( "#cf-aweber-auth-save" ).on( 'click', function(e) {
 			e.preventDefault();
@@ -104,6 +104,7 @@ $credentials_set = $credentials->all_set();
 		});
 
 		function getLists(){
+
 			var spinnerEL = document.getElementById( 'cf-aweber-get-list-spinner' );
 			var data = {
 				action: 'cf_aweber_get_lists',

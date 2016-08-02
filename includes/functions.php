@@ -75,7 +75,15 @@ function cf_aweber_lists(){
 	if( ! empty( $lists ) ){
 		$lists = array_combine( wp_list_pluck( $lists, 'id' ), wp_list_pluck( $lists, 'name' ) );
 	}
+
+	if( empty( $lists ) ){
+		$lists = array(
+			0 => sprintf( '-- %s --', __( 'Select A List', 'cf-aweber' ) )
+		);
+	}
+
 	return $lists;
+
 }
 
 /**
@@ -93,6 +101,7 @@ function cf_aweber_lists_field_config(){
 		'type'     => 'dropdown',
 		'options' => cf_aweber_lists(),
 		'required' => true,
+		'extra_classes' => 'block-input',
 	);
 }
 
@@ -150,7 +159,6 @@ function cf_aweber_fields(){
 			'required' => false,
 			'desc_escaped' => true
 		)
-
 	);
 
 	/**
