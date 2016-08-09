@@ -73,7 +73,17 @@ $credentials_set = $credentials->all_set();
 
 <script type="text/javascript">
 	jQuery(document).ready(function( $ ) {
-		console.log( $( '.processor_config_string' ).closest() );
+
+
+		$hiddenList = $( '#cf-aweber-list-hidden' );
+		$selectList = $( '#cf-aweber-list' );
+		if( '' != $hiddenList.val() ){
+			$selectList.val( $hiddenList.val() );
+		}
+
+		$selectList.on( 'change', function(){
+			$hiddenList.val( $selectList.val() );
+		});
 
 		$( "#cf-aweber-auth-save" ).on( 'click', function(e) {
 			e.preventDefault();

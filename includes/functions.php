@@ -117,6 +117,12 @@ function cf_aweber_fields(){
 	$fields = array(
 		cf_aweber_lists_field_config(),
 		array(
+			'id'       => 'cf-aweber-list-hidden',
+			'type'     => 'hidden',
+			'required' => true,
+			'magic' => false
+		),
+		array(
 			'id'       => 'cf-aweber-email',
 			'label'    => __( 'Email Address', 'cf-aweber' ),
 			'desc'     => __( 'Subscriber email address.', 'cf-aweber' ),
