@@ -55,9 +55,18 @@ function cf_aweber_config(){
  *
  * @since 0.1.0
  *
+ * @param bool $skip_cache Optional. If false, results are cached. If true, caching is skipped. False is the default.
+ *
  * @return array|void
  */
-function cf_aweber_lists(){
+function cf_aweber_lists( $skip_cache = false ){
+	if ( ! $skip_cache ) {
+		if ( false != ( $lists = get_transient( 'cf_aweber_lists' ) ) ) {
+			return $lists;
+		}
+
+	}
+
 	$credentials = cf_aweber_main_credentials();
 	$set = $credentials->all_set();
 	if( ! $set ){
@@ -71,9 +80,18 @@ function cf_aweber_lists(){
 
 	
 	$client = new CF_Aweber_Client( $credentials );
-	$lists = $client->listLists();
-	if( ! empty( $lists ) ){
-		$lists = array_combine( wp_list_pluck( $lists, 'id' ), wp_list_pluck( $lists, 'name' ) );
+	$_lists = $client->listLists();
+	if( ! empty( $_lists ) ){
+		$ids = wp_list_pluck( $_lists, 'id' );
+		$names = wp_list_pluck( $_lists, 'name' );
+		if( is_array( $names ) && is_array( $ids ) ){
+			$lists = array_combine( wp_list_pluck( $_lists, 'id' ), wp_list_pluck( $_lists, 'name' ) );
+			if ( ! $skip_cache ) {
+				set_transient( 'cf_aweber_lists', $lists, 599 );
+			}
+
+		}
+
 	}
 
 	if( empty( $lists ) ){
