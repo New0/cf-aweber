@@ -120,6 +120,7 @@ function cf_aweber_lists_field_config(){
 		'options' => cf_aweber_lists(),
 		'required' => true,
 		'extra_classes' => 'block-input',
+		'magic' => false
 	);
 }
 
