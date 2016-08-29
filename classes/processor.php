@@ -67,7 +67,7 @@ class CF_Aweber_Processor extends Caldera_Forms_Processor_Newsletter {
 		if( ! isset( $subscriber_data[ 'email' ] ) || ! is_email( $subscriber_data[ 'email' ] ) ){
 			$this->data_object->add_error( __( 'Invalid email address.', 'cf-aweber' )  );
 		}else{
-			$subscribed = $this->subscribe( $subscriber_data, $this->data_object->get_value( 'list' ) );
+			$subscribed = $this->subscribe( $subscriber_data, $this->data_object->get_value( 'cf-aweber-list' ) );
 
 			if ( is_array( $subscribed ) ) {
 				Caldera_Forms::set_submission_meta( 'aweber', $subscribed, $form, $proccesid );

@@ -139,7 +139,8 @@ function cf_aweber_fields(){
 			'id'       => 'cf-aweber-list-hidden',
 			'type'     => 'hidden',
 			'required' => true,
-			'magic' => false
+			'magic' => false,
+			'label' => __( 'List ID', 'cf-aweber' )
 		),
 		array(
 			'id'       => 'cf-aweber-email',

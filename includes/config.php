@@ -75,8 +75,16 @@ $credentials_set = $credentials->all_set();
 	jQuery(document).ready(function( $ ) {
 
 
-		$hiddenList = $( '#cf-aweber-list-hidden' );
-		$selectList = $( '#cf-aweber-list' );
+		var pId = "{{_id}}";
+		var tag, hid, sel;
+		tag = 'config[processors][' + pId + '][config][cf-aweber-list]';
+
+		sel = document.getElementsByName( tag );
+		var $selectList = $( sel[0] );
+
+		tag = 'config[processors][' + pId + '][config][cf-aweber-list-hidden]';
+		var hid = document.getElementsByName( tag );
+		var $hiddenList = $( hid[0] );
 		if( '' != $hiddenList.val() ){
 			$selectList.val( $hiddenList.val() );
 		}
@@ -125,7 +133,9 @@ $credentials_set = $credentials->all_set();
 			var xhr = $.get( ajaxurl, data );
 			xhr.done(function( r ) {
 				if( 'object' == typeof  r ){
-					$( '#cf-aweber-list' ).html( r.data.input );
+
+
+					$selectList.html( r.data.input );
 				}
 				$( spinnerEL ).css( 'visibility', 'hidden' ).attr( 'aria-hidden', 'true' ).hide();
 			});
