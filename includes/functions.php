@@ -332,9 +332,21 @@ function cf_aweber_get_lists_ajax_cb(){
 		if( cf_aweber_main_credentials()->all_set() ){
 			$client = new CF_Aweber_Client( $credentials );
 			$lists = $client->listLists();
+			
 			if( is_array( $lists ) && ! empty( $lists ) ) {
+
 				wp_send_json_success( array( 'input' => Caldera_Forms_Processor_UI::config_field( cf_aweber_lists_field_config() ) ) );
+
+			} else {
+
+				wp_send_json_success( array( 'message' => __( 'No Lists Found', 'cf-aweber' ) ) );
+
 			}
+
+		} else {
+
+			wp_send_json_success( array( 'message' => __( 'Invalid authorization', 'cf-aweber' ) ) );
+
 		}
 
 		wp_send_json_error();
